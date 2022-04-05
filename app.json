@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "expo-rocketseat",
+    "slug": "expo-rocketseat",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
