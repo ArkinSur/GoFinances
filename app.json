@@ -3,6 +3,7 @@
     "name": "expo-rocketseat",
     "slug": "expo-rocketseat",
     "version": "1.0.0",
+    "orientation": "portrait",
     "assetBundlePatterns": [
       "**/*"
     ]

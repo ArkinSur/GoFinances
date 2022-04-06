@@ -1,7 +1,9 @@
 import styled from 'styled-components/native';
 import { Feather } from '@expo/vector-icons';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
-import { getStatusBarHeight } from 'react-native-iphone-x-helper';
+import { getBottomSpace, getStatusBarHeight } from 'react-native-iphone-x-helper';
+import { FlatList, FlatListProps } from 'react-native';
+import { Data } from '../../components/TransactionCard';
 
 export const Container = styled.View`
   flex: 1;
@@ -60,7 +62,7 @@ export const IconButton = styled.TouchableOpacity`
 
 export const Icon = styled(Feather)`
   color: ${({ theme }) => theme.colors.secondary};
-  font-size: ${RFValue(26)};
+  font-size: ${RFValue(26)}px;
 `;
 
 export const HighLightCards = styled.ScrollView.attrs({
@@ -72,3 +74,24 @@ export const HighLightCards = styled.ScrollView.attrs({
   position: absolute;
   top: ${RFPercentage(20)}px;
 `;
+
+export const Transactions = styled.View`
+  flex: 1;
+  padding: 0 ${RFValue(20)}px;
+  margin-top: ${RFPercentage(12)}px;
+`;
+
+export const Title = styled.Text`
+  font-size: ${RFValue(18)}px;
+  font-family: ${({ theme }) => theme.fonts.regular};
+  margin-bottom: ${RFValue(16)}px;
+`;
+
+export const TransactionList = styled(
+  FlatList as new (_props: FlatListProps<Data>) => FlatList<Data>
+).attrs({
+  showsVerticalScrollIndicator: false,
+  contentContainerStyle: {
+    paddingBottom: getBottomSpace()
+  }
+})``;
