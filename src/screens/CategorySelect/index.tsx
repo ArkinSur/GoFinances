@@ -1,3 +1,7 @@
+import { useCallback } from 'react';
+import { FlatList } from 'react-native';
+import { Button } from '../../components/Form/Button';
+import { categories } from '../../utils/categories';
 import * as S from './styles';
 
 interface Category {
@@ -12,11 +16,30 @@ interface Props {
 }
 
 export function CategorySelect({ category, setCategory, closeSelectCategory }: Props) {
+  const handleSeparator = useCallback(() => <S.Separator />, []);
+
   return (
     <S.Container>
       <S.Header>
         <S.Title>Categoria</S.Title>
       </S.Header>
+      <FlatList
+        data={categories}
+        keyExtractor={(item) => item.key}
+        renderItem={({ item }) => {
+          return (
+            <S.Category>
+              <S.Icon name={item.icon} />
+              <S.Name>{item.name}</S.Name>
+            </S.Category>
+          );
+        }}
+        style={{ flexGrow: 0 }}
+        ItemSeparatorComponent={handleSeparator}
+      />
+      <S.Footer>
+        <Button activeOpacity={0.6} title="Selecionar" />
+      </S.Footer>
     </S.Container>
   );
 }
