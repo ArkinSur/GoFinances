@@ -22,6 +22,7 @@ export const Container = styled.TouchableOpacity<ContainerProps>`
     selected &&
     css`
       background-color: ${type === 'up' ? theme.colors.successLight : theme.colors.errorLight};
+      border-color: ${type === 'up' ? theme.colors.successLight : theme.colors.errorLight};
     `}
 `;
 

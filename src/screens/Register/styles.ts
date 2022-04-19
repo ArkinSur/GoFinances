@@ -36,5 +36,5 @@ export const TransactionButtonsContainer = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin-top: 4px;
+  margin-top: 8px;
 `;
