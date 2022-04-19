@@ -6,7 +6,7 @@ import {
   Poppins_500Medium,
   Poppins_700Bold
 } from '@expo-google-fonts/poppins';
-import { Register } from './screens/Register';
+import { CategorySelect } from './screens/CategorySelect';
 import theme from './global/styles/theme';
 
 export default function App() {
@@ -22,7 +22,7 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Register />
+      <CategorySelect />
     </ThemeProvider>
   );
 }

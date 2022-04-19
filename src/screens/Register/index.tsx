@@ -3,6 +3,7 @@ import { Input } from '../../components/Form/Input';
 import { Button } from '../../components/Form/Button';
 import { TransactionTypeButton } from '../../components/Form/TransactionTypeButton';
 import * as S from './styles';
+import { CategorySelect } from '../../components/CategorySelect';
 
 export function Register() {
   const [buttonSelected, setButtonSelected] = useState<'income' | 'outcome' | null>(null);
@@ -36,6 +37,7 @@ export function Register() {
               title="Outcome"
             />
           </S.TransactionButtonsContainer>
+          <CategorySelect title="Categoria" />
         </S.Fields>
         <Button title="Enviar" />
       </S.Form>
