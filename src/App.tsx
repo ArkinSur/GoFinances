@@ -1,3 +1,4 @@
+/* eslint-disable react/style-prop-object */
 import AppLoading from 'expo-app-loading';
 import { ThemeProvider } from 'styled-components/native';
 import {
@@ -6,7 +7,8 @@ import {
   Poppins_500Medium,
   Poppins_700Bold
 } from '@expo-google-fonts/poppins';
-import { CategorySelect } from './screens/CategorySelect';
+import { StatusBar } from 'expo-status-bar';
+import { Register } from './screens/Register';
 import theme from './global/styles/theme';
 
 export default function App() {
@@ -22,7 +24,8 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <CategorySelect />
+      <StatusBar style="light" />
+      <Register />
     </ThemeProvider>
   );
 }

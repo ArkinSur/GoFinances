@@ -28,17 +28,16 @@ export function CategorySelect({ category, setCategory, closeSelectCategory }: P
         keyExtractor={(item) => item.key}
         renderItem={({ item }) => {
           return (
-            <S.Category>
+            <S.Category onPress={() => setCategory(item)} isActive={category === item.name}>
               <S.Icon name={item.icon} />
               <S.Name>{item.name}</S.Name>
             </S.Category>
           );
         }}
-        style={{ flexGrow: 0 }}
         ItemSeparatorComponent={handleSeparator}
       />
       <S.Footer>
-        <Button activeOpacity={0.6} title="Selecionar" />
+        <Button activeOpacity={0.6} title="Selecionar" onPress={closeSelectCategory} />
       </S.Footer>
     </S.Container>
   );

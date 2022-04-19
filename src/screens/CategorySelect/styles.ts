@@ -1,7 +1,12 @@
 import { Feather } from '@expo/vector-icons';
+import { Platform } from 'react-native';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
+
+type CategoryProps = {
+  isActive: boolean;
+};
 
 export const Container = styled.View`
   flex: 1;
@@ -11,7 +16,7 @@ export const Container = styled.View`
 export const Header = styled.View`
   background-color: ${({ theme }) => theme.colors.primary};
   width: 100%;
-  height: ${RFPercentage(15)}px;
+  height: ${RFPercentage(Platform.OS === 'ios' ? 15 : 14)}px;
   align-items: center;
   justify-content: center;
 `;
@@ -20,14 +25,19 @@ export const Title = styled.Text`
   font-family: ${({ theme }) => theme.fonts.regular};
   font-size: ${RFValue(18)}px;
   color: ${({ theme }) => theme.colors.shape};
-  margin-top: ${RFValue(getStatusBarHeight())}px;
+  margin-top: ${Platform.OS === 'ios' ? RFValue(getStatusBarHeight()) : 24}px;
 `;
 
-export const Category = styled.View`
+export const Category = styled.TouchableOpacity<CategoryProps>`
   flex-direction: row;
   align-items: center;
   width: 100%;
   padding: ${RFValue(15)}px;
+  ${({ isActive, theme }) =>
+    isActive &&
+    css`
+      background-color: ${theme.colors.secondaryLight};
+    `}
 `;
 
 export const Icon = styled(Feather)`
