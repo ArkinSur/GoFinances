@@ -1,16 +1,29 @@
 import { useState } from 'react';
-import { Modal } from 'react-native';
-import { Input } from '../../components/Form/Input';
+import { Modal, TouchableWithoutFeedback, Keyboard, Text } from 'react-native';
+import * as Yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
 import { Button } from '../../components/Form/Button';
 import { TransactionTypeButton } from '../../components/Form/TransactionTypeButton';
 import * as S from './styles';
 import { CategorySelect as CategorySelectButton } from '../../components/CategorySelect';
 import { CategorySelect } from '../CategorySelect';
+import { InputForm } from '../../components/Form/InputForm';
 
 interface Category {
   key: string;
   name: string;
 }
+
+interface FormData {
+  name: string;
+  amount: string;
+}
+
+const schema = Yup.object().shape({
+  name: Yup.string().required('Required'),
+  amount: Yup.number().typeError('Invalid type').positive('Positve').required('Required')
+});
 
 export function Register() {
   const [category, setCategory] = useState<Category>({ key: '1', name: 'Categoria' });
@@ -29,37 +42,66 @@ export function Register() {
   const handleOpenSelectCategory = () => {
     setModalVisible(true);
   };
+  const handleRegister = (values: FormData) => {
+    console.log(values);
+  };
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<FormData>({
+    resolver: yupResolver(schema)
+  });
 
   return (
     <>
-      <S.Container>
-        <S.Header>
-          <S.Title>Cadastro</S.Title>
-        </S.Header>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <S.Container>
+          <S.Header>
+            <S.Title>Cadastro</S.Title>
+          </S.Header>
 
-        <S.Form>
-          <S.Fields>
-            <Input placeholder="Nome" />
-            <Input placeholder="Preço" />
-            <S.TransactionButtonsContainer>
-              <TransactionTypeButton
-                selected={buttonSelected === 'income'}
-                onPress={() => handleSelection('income')}
-                type="up"
-                title="Income"
+          <S.Form>
+            <S.Fields>
+              <InputForm
+                control={control}
+                name="name"
+                placeholder="Nome"
+                autoCapitalize="sentences"
               />
-              <TransactionTypeButton
-                selected={buttonSelected === 'outcome'}
-                onPress={() => handleSelection('outcome')}
-                type="down"
-                title="Outcome"
+              {errors.name && (
+                <Text style={{ marginBottom: 8, color: 'red' }}>{errors.name.message}</Text>
+              )}
+              <InputForm
+                control={control}
+                name="amount"
+                placeholder="Preço"
+                keyboardType="numeric"
               />
-            </S.TransactionButtonsContainer>
-            <CategorySelectButton title={category.name} onPress={handleOpenSelectCategory} />
-          </S.Fields>
-          <Button title="Enviar" />
-        </S.Form>
-      </S.Container>
+              {errors.amount && (
+                <Text style={{ marginBottom: 8, color: 'red' }}>{errors.amount.message}</Text>
+              )}
+              <S.TransactionButtonsContainer>
+                <TransactionTypeButton
+                  selected={buttonSelected === 'income'}
+                  onPress={() => handleSelection('income')}
+                  type="up"
+                  title="Income"
+                />
+                <TransactionTypeButton
+                  selected={buttonSelected === 'outcome'}
+                  onPress={() => handleSelection('outcome')}
+                  type="down"
+                  title="Outcome"
+                />
+              </S.TransactionButtonsContainer>
+              <CategorySelectButton title={category.name} onPress={handleOpenSelectCategory} />
+            </S.Fields>
+            <Button title="Enviar" onPress={handleSubmit(handleRegister)} />
+          </S.Form>
+        </S.Container>
+      </TouchableWithoutFeedback>
       <Modal
         animationType="slide"
         transparent
