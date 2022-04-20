@@ -3,6 +3,7 @@ import { Feather } from '@expo/vector-icons';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import { getBottomSpace, getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { FlatList, FlatListProps, Platform } from 'react-native';
+import { BorderlessButton } from 'react-native-gesture-handler';
 import { Data } from '../../components/TransactionCard';
 
 export const Container = styled.View`
@@ -56,8 +57,8 @@ export const UserName = styled.Text`
   font-family: ${({ theme }) => theme.fonts.bold};
 `;
 
-export const IconButton = styled.TouchableOpacity`
-  padding: 6px 0 6px 6px;
+export const IconButton = styled(BorderlessButton)`
+  padding: 6px;
 `;
 
 export const Icon = styled(Feather)`

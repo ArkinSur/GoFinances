@@ -1,78 +1,63 @@
-import { StatusBar } from 'react-native';
-import { useCallback } from 'react';
+import { StatusBar, View } from 'react-native';
+import { useCallback, useState } from 'react';
+import { useAsyncStorage } from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 import { Data, TransactionCard } from '../../components/TransactionCard';
 import { HighLightCard } from '../../components/HighLightCard';
-import {
-  Container,
-  Header,
-  UserWrapper,
-  UserInfo,
-  Photo,
-  User,
-  UserGreeting,
-  UserName,
-  IconButton,
-  Icon,
-  HighLightCards,
-  Transactions,
-  Title,
-  TransactionList
-} from './styles';
+import * as S from './styles';
+import { DataKey } from '../../utils/keys';
 
 export function Dashboard() {
-  const data: Data[] = [
-    {
-      type: 'positive',
-      title: 'Desenvolvimento de site',
-      amount: 'R$ 12.000,00',
-      category: { name: 'Vendas', icon: 'dollar-sign' },
-      date: '13/04/2020'
-    },
-    {
-      type: 'negative',
-      title: 'Hamburgueria O Vei',
-      amount: 'R$ 59,00',
-      category: { name: 'Alimentação', icon: 'coffee' },
-      date: '12/04/2020'
-    },
-    {
-      type: 'negative',
-      title: 'Alguel do apartamento',
-      amount: 'R$ 1.200,00',
-      category: { name: 'Casa', icon: 'shopping-bag' },
-      date: '11/04/2020'
-    },
-    {
-      type: 'positive',
-      title: 'Desenvolvimento de site',
-      amount: 'R$ 12.000,00',
-      category: { name: 'Vendas', icon: 'dollar-sign' },
-      date: '10/04/2020'
-    }
-  ];
+  const [data, setData] = useState<Data[]>([]);
+
+  const { getItem } = useAsyncStorage(DataKey);
 
   const renderHeader = useCallback(() => {
-    return <Title>Listagem</Title>;
+    return <S.Title>Listagem</S.Title>;
   }, []);
 
+  const renderEmpty = useCallback(() => {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <S.Title>Não há transações no momento</S.Title>
+      </View>
+    );
+  }, []);
+
+  async function loadData() {
+    try {
+      const transactions = await getItem();
+      const formatedData = transactions ? JSON.parse(transactions) : [];
+      setData(formatedData);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  useFocusEffect(
+    useCallback(() => {
+      loadData();
+    }, [])
+  );
+
   return (
-    <Container>
+    <S.Container>
       <StatusBar barStyle="light-content" />
-      <Header>
-        <UserWrapper>
-          <UserInfo>
-            <Photo source={{ uri: 'https://avatars.githubusercontent.com/u/37552311?v=4' }} />
-            <User>
-              <UserGreeting>Olá,</UserGreeting>
-              <UserName>Filipe</UserName>
-            </User>
-          </UserInfo>
-          <IconButton>
-            <Icon name="power" />
-          </IconButton>
-        </UserWrapper>
-      </Header>
-      <HighLightCards>
+      <S.Header>
+        <S.UserWrapper>
+          <S.UserInfo>
+            <S.Photo source={{ uri: 'https://avatars.githubusercontent.com/u/37552311?v=4' }} />
+            <S.User>
+              <S.UserGreeting>Olá,</S.UserGreeting>
+              <S.UserName>Filipe</S.UserName>
+            </S.User>
+          </S.UserInfo>
+          <S.IconButton onPress={() => console.log('oi')}>
+            <S.Icon name="power" />
+          </S.IconButton>
+        </S.UserWrapper>
+      </S.Header>
+      <S.HighLightCards>
         <HighLightCard
           title="Entrada"
           amount="R$ 17.400,00"
@@ -91,15 +76,16 @@ export function Dashboard() {
           lastTransaction="01 à 16 de abril"
           type="total"
         />
-      </HighLightCards>
-      <Transactions>
-        <TransactionList
+      </S.HighLightCards>
+      <S.Transactions>
+        <S.TransactionList
           data={data}
           ListHeaderComponent={renderHeader}
+          ListEmptyComponent={renderEmpty}
           renderItem={({ item }) => <TransactionCard data={item} />}
-          keyExtractor={(item, index) => item.title + index.toString()}
+          keyExtractor={(item) => item.key}
         />
-      </Transactions>
-    </Container>
+      </S.Transactions>
+    </S.Container>
   );
 }

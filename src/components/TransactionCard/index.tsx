@@ -1,3 +1,7 @@
+/* eslint-disable import/no-duplicates */
+
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import * as S from './styles';
 
 interface Category {
@@ -6,11 +10,12 @@ interface Category {
 }
 
 export interface Data {
+  key: string;
   type: 'positive' | 'negative';
-  title: string;
+  name: string;
   amount: string;
   category: Category;
-  date: string;
+  date: number;
 }
 
 interface Props {
@@ -18,10 +23,10 @@ interface Props {
 }
 
 export function TransactionCard({ data }: Props) {
-  const { title, amount, category, date, type } = data;
+  const { name, amount, category, date, type } = data;
   return (
     <S.Container>
-      <S.Title>{title}</S.Title>
+      <S.Title>{name}</S.Title>
       <S.Amount type={type}>
         {type === 'positive' ? '+ ' : '- '}
         {amount}
@@ -29,10 +34,10 @@ export function TransactionCard({ data }: Props) {
 
       <S.Footer>
         <S.Category>
-          <S.Icon name={category.icon} />
-          <S.CategoryName>{category.name}</S.CategoryName>
+          <S.Icon name={category?.icon ?? 'shopping-bag'} />
+          <S.CategoryName>{category?.name}</S.CategoryName>
         </S.Category>
-        <S.Date>{date}</S.Date>
+        <S.Date>{format(date, 'dd/MM/yyyy', { locale: ptBR })}</S.Date>
       </S.Footer>
     </S.Container>
   );

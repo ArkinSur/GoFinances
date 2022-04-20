@@ -3,12 +3,15 @@ import { Modal, TouchableWithoutFeedback, Keyboard, Text } from 'react-native';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
+import { useAsyncStorage } from '@react-native-async-storage/async-storage';
+import { useTheme } from 'styled-components/native';
 import { Button } from '../../components/Form/Button';
 import { TransactionTypeButton } from '../../components/Form/TransactionTypeButton';
 import * as S from './styles';
 import { CategorySelect as CategorySelectButton } from '../../components/CategorySelect';
 import { CategorySelect } from '../CategorySelect';
 import { InputForm } from '../../components/Form/InputForm';
+import { DataKey } from '../../utils/keys';
 
 interface Category {
   key: string;
@@ -26,9 +29,12 @@ const schema = Yup.object().shape({
 });
 
 export function Register() {
-  const [category, setCategory] = useState<Category>({ key: '1', name: 'Categoria' });
+  const [category, setCategory] = useState<Category>({ key: 'category', name: 'Categoria' });
   const [buttonSelected, setButtonSelected] = useState<'income' | 'outcome' | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
+
+  const theme = useTheme();
+  const { setItem, getItem } = useAsyncStorage(DataKey);
 
   const handleSelection = (value: 'income' | 'outcome') => {
     if (value === buttonSelected) setButtonSelected(null);
@@ -42,17 +48,38 @@ export function Register() {
   const handleOpenSelectCategory = () => {
     setModalVisible(true);
   };
-  const handleRegister = (values: FormData) => {
-    console.log(values);
-  };
 
   const {
     control,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
+    reset
   } = useForm<FormData>({
     resolver: yupResolver(schema)
   });
+
+  const handleRegister = async (values: FormData) => {
+    if (!buttonSelected) return;
+    if (category.name === 'category') return;
+    const data = {
+      name: values.name,
+      amount: `R$ ${values.amount},00`,
+      type: buttonSelected === 'income' ? 'positive' : 'negative',
+      category,
+      date: new Date().getTime()
+    };
+
+    try {
+      const currentData = await getItem();
+      const newData = currentData ? [data, ...JSON.parse(currentData)] : [data];
+      await setItem(JSON.stringify(newData));
+      reset();
+      setButtonSelected(null);
+      setCategory({ key: 'category', name: 'Categoria' });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <>
@@ -84,12 +111,16 @@ export function Register() {
               )}
               <S.TransactionButtonsContainer>
                 <TransactionTypeButton
+                  rippleColor={theme.colors.successLight}
+                  underlayColor={theme.colors.successLight}
                   selected={buttonSelected === 'income'}
                   onPress={() => handleSelection('income')}
                   type="up"
                   title="Income"
                 />
                 <TransactionTypeButton
+                  rippleColor={theme.colors.errorLight}
+                  underlayColor={theme.colors.errorLight}
                   selected={buttonSelected === 'outcome'}
                   onPress={() => handleSelection('outcome')}
                   type="down"

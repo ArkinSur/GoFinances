@@ -37,7 +37,7 @@ export function CategorySelect({ category, setCategory, closeSelectCategory }: P
         ItemSeparatorComponent={handleSeparator}
       />
       <S.Footer>
-        <Button activeOpacity={0.6} title="Selecionar" onPress={closeSelectCategory} />
+        <Button title="Selecionar" onPress={() => closeSelectCategory()} />
       </S.Footer>
     </S.Container>
   );
