@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import { Feather } from '@expo/vector-icons';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import { getBottomSpace, getStatusBarHeight } from 'react-native-iphone-x-helper';
-import { FlatList, FlatListProps } from 'react-native';
+import { FlatList, FlatListProps, Platform } from 'react-native';
 import { Data } from '../../components/TransactionCard';
 
 export const Container = styled.View`
@@ -23,7 +23,7 @@ export const Header = styled.View`
 export const UserWrapper = styled.View`
   width: 100%;
   padding: 0 ${RFValue(20)}px;
-  margin-top: ${getStatusBarHeight() + RFValue(28)}px;
+  margin-top: ${getStatusBarHeight() + RFValue(Platform.OS === 'ios' ? 28 : 6)}px;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
@@ -72,13 +72,13 @@ export const HighLightCards = styled.ScrollView.attrs({
 })`
   width: 100%;
   position: absolute;
-  top: ${RFPercentage(20)}px;
+  top: ${Platform.OS === 'ios' ? RFPercentage(20) : RFPercentage(20)}px;
 `;
 
 export const Transactions = styled.View`
   flex: 1;
   padding: 0 ${RFValue(20)}px;
-  margin-top: ${RFPercentage(12)}px;
+  margin-top: ${RFValue(70)}px;
 `;
 
 export const Title = styled.Text`
