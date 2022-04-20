@@ -8,8 +8,9 @@ import {
   Poppins_700Bold
 } from '@expo-google-fonts/poppins';
 import { StatusBar } from 'expo-status-bar';
-import { Register } from './screens/Register';
+import { NavigationContainer } from '@react-navigation/native';
 import theme from './global/styles/theme';
+import { AppRoutes } from './routes/app.routes';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -25,7 +26,9 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <StatusBar style="light" />
-      <Register />
+      <NavigationContainer>
+        <AppRoutes />
+      </NavigationContainer>
     </ThemeProvider>
   );
 }
