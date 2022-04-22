@@ -14,6 +14,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import theme from './global/styles/theme';
 import { AppRoutes } from './routes/app.routes';
 import { SignIn } from './screens/SignIn';
+import { AuthProvider } from './contexts/Auth';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -30,9 +31,11 @@ export default function App() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ThemeProvider theme={theme}>
         <StatusBar style="light" />
-        <NavigationContainer>
-          <SignIn />
-        </NavigationContainer>
+        <AuthProvider>
+          <NavigationContainer>
+            <SignIn />
+          </NavigationContainer>
+        </AuthProvider>
       </ThemeProvider>
     </GestureHandlerRootView>
   );

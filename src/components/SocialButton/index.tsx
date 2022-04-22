@@ -1,8 +1,9 @@
 import { FC } from 'react';
+import { RectButtonProps } from 'react-native-gesture-handler';
 import { SvgProps } from 'react-native-svg';
 import * as S from './styles';
 
-interface Props {
+interface Props extends RectButtonProps {
   Icon: FC<SvgProps>;
   title: string;
 }
@@ -10,7 +11,9 @@ interface Props {
 export function SocialButton({ Icon, title }: Props) {
   return (
     <S.Container>
-      <Icon />
+      <S.IconWrapper>
+        <Icon />
+      </S.IconWrapper>
       <S.Title>{title}</S.Title>
     </S.Container>
   );

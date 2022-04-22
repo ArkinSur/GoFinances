@@ -1,3 +1,4 @@
+import { Platform } from 'react-native';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import styled from 'styled-components/native';
@@ -10,9 +11,9 @@ export const Container = styled.View`
 
 // 30px
 export const Header = styled.View`
-  padding-top: ${getStatusBarHeight() + RFValue(50)}px;
+  padding-top: ${getStatusBarHeight() + RFValue(Platform.OS === 'ios' ? 36 : 18)}px;
   background-color: ${({ theme }) => theme.colors.primary};
-  height: ${RFPercentage(74)}px;
+  height: ${RFPercentage(75)}px;
   width: 100%;
   align-items: center;
 `;

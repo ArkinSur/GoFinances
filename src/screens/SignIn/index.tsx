@@ -4,8 +4,12 @@ import Logo from '../../assets/logo.svg';
 import AppleLogo from '../../assets/apple.svg';
 import GoogleLogo from '../../assets/google.svg';
 import { SocialButton } from '../../components/SocialButton';
+import { useAuth } from '../../hooks/useAuth';
 
 export function SignIn() {
+  const { user } = useAuth();
+
+  console.log(user);
   return (
     <S.Container>
       <S.Header>
@@ -16,8 +20,8 @@ export function SignIn() {
         <S.SignInTitle>Faça seu login com uma das contas abaixo</S.SignInTitle>
       </S.Header>
       <S.Footer>
-        <SocialButton Icon={GoogleLogo} title="Faça login com Google" />
-        <SocialButton Icon={AppleLogo} title="Faça login com Apple" />
+        <SocialButton Icon={GoogleLogo} title="Entrar com Google" />
+        <SocialButton Icon={AppleLogo} title="Entrar com Apple" />
       </S.Footer>
     </S.Container>
   );
