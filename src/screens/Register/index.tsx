@@ -3,6 +3,7 @@ import { Modal, TouchableWithoutFeedback, Keyboard, Text } from 'react-native';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
+import { v4 } from 'uuid';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { useTheme } from 'styled-components/native';
 import { Button } from '../../components/Form/Button';
@@ -28,7 +29,8 @@ const schema = Yup.object().shape({
   amount: Yup.number().typeError('Invalid type').positive('Positve').required('Required')
 });
 
-export function Register() {
+// @ts-ignore
+export function Register({ navigation }) {
   const [category, setCategory] = useState<Category>({ key: 'category', name: 'Categoria' });
   const [buttonSelected, setButtonSelected] = useState<'income' | 'outcome' | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
@@ -62,8 +64,9 @@ export function Register() {
     if (!buttonSelected) return;
     if (category.name === 'category') return;
     const data = {
+      key: v4(),
       name: values.name,
-      amount: `R$ ${values.amount},00`,
+      amount: Number(values.amount).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }),
       type: buttonSelected === 'income' ? 'positive' : 'negative',
       category,
       date: new Date().getTime()
@@ -76,6 +79,7 @@ export function Register() {
       reset();
       setButtonSelected(null);
       setCategory({ key: 'category', name: 'Categoria' });
+      navigation.navigate('Listagem');
     } catch (error) {
       console.error(error);
     }

@@ -7,6 +7,8 @@ import * as S from './styles';
 interface Category {
   name: string;
   icon: string;
+  color: string;
+  key: string;
 }
 
 export interface Data {

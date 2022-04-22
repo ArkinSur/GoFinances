@@ -27,7 +27,7 @@ export function Dashboard() {
   async function loadData() {
     try {
       const transactions = await getItem();
-      const formatedData = transactions ? JSON.parse(transactions) : [];
+      const formatedData: Data[] = transactions ? JSON.parse(transactions) : [];
       setData(formatedData);
     } catch (error) {
       console.error(error);

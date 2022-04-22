@@ -14,15 +14,15 @@ export const Container = styled.View`
 `;
 
 export const Title = styled.Text`
-  font-family: ${({ theme }) => theme.fonts.regular}
+  font-family: ${({ theme }) => theme.fonts.regular};
   font-size: ${RFValue(14)}px;
 `;
 
 export const Amount = styled.Text<TransactionProps>`
-  font-family: ${({ theme }) => theme.fonts.regular}  
+  font-family: ${({ theme }) => theme.fonts.regular};
   font-size: ${RFValue(20)}px;
   margin-top: 4px;
-  color: ${({ theme, type }) => (type === 'positive' ? theme.colors.success : theme.colors.error)}
+  color: ${({ theme, type }) => (type === 'positive' ? theme.colors.success : theme.colors.error)};
 `;
 
 export const Footer = styled.View`

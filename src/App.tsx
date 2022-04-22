@@ -1,4 +1,5 @@
 /* eslint-disable react/style-prop-object */
+import 'react-native-get-random-values';
 import AppLoading from 'expo-app-loading';
 import { ThemeProvider } from 'styled-components/native';
 import {
