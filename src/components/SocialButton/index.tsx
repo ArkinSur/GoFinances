@@ -8,9 +8,9 @@ interface Props extends RectButtonProps {
   title: string;
 }
 
-export function SocialButton({ Icon, title }: Props) {
+export function SocialButton({ Icon, title, ...rest }: Props) {
   return (
-    <S.Container>
+    <S.Container {...rest}>
       <S.IconWrapper>
         <Icon />
       </S.IconWrapper>
