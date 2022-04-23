@@ -5,3 +5,8 @@ declare module '*.svg' {
   const content: React.FC<SvgProps>;
   export default content;
 }
+
+declare module 'react-native-dotenv' {
+  export const CLIENT_ID: string;
+  export const REDIRECT_URI: string;
+}

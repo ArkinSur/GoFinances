@@ -17,8 +17,6 @@ export function SignIn() {
     }
   };
 
-  console.log(user);
-
   return (
     <S.Container>
       <S.Header>

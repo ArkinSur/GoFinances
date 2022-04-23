@@ -1,9 +1,9 @@
 /* eslint-disable consistent-return */
 import { ReactNode, useMemo, useState } from 'react';
 import * as AuthSession from 'expo-auth-session';
-import { string } from 'yup';
+import { CLIENT_ID, REDIRECT_URI } from 'react-native-dotenv';
 import AuthContext, { Context } from './context';
-import { CLIENT_ID, REDIRECT_URI, RESPONSE_TYPE, SCOPE } from '../../utils/keys';
+import { RESPONSE_TYPE, SCOPE } from '../../utils/keys';
 
 interface Props {
   children: ReactNode;
@@ -55,7 +55,7 @@ function AuthProvider({ children }: Props) {
         });
         return userInfo;
       }
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   };
